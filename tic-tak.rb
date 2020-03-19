@@ -1,19 +1,19 @@
 module Choice
   def grid_choice
     puts "What which square would you like to be?"
-    responce = gets.chomp
+    responce = gets.chomp.to_i
     responce
     #put in check for grid
   end
 
   def user_icon(player)
     puts "What symbol do you want to be, #{player}"
-    gets.chomp
+    gets.chomp.to_s
   end
 
   def player_name
     puts "What is your name"
-    gets.chomp
+    gets.chomp.to_s
   end
 end
 
@@ -39,26 +39,53 @@ class Grid
   end
 
 
-  def player_chioce (x, y) 
-    for i in @@grid do
-      if i == x && i.between(1..9)
-        i = y #not updating in array
+  def grid_update (x, y) 
+    @@grid.map do |i|
+      if i == x && i.between?(1, 9)
+        @@grid[(i-1)] = y
+      else
+        i
       end
     end
-    puts @@grid
+    for i in @@grid
+      if i%3 != 0
+        print "[#{i}]"
+      else
+        puts "[#{i}]"
+      end
+    end
   end
 
 end
 
-three = Grid.new
+class Game < Grid
+  @@player_one_score = 0
+  @@player_two_score = 0
+  @@play_game = true
+
+  def initialize (player_one, player_two)
+    @player_one = player_one
+    @player_two = player_two
+  end
+  
+  def check_win
+    @@grid.each do |x, y ,z|
+      puts @@grid[x], @@grid[y], @@grid[z]
+    end
+  end
+  
+end
+
+
+three = Game.new("Me", "Him")
 
 three.create
 
 x = three.choice
 y = three.user_icon("Me")
 
-three.player_chioce(x, y)
-=begin
-tasks to do, create function that makes grid from updated array
-create game class that goes until a check of array 
-=end
+three.grid_update(x, y)
+three.check_win
+
+
+#create game class that goes until a check of array 

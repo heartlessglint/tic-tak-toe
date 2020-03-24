@@ -3,7 +3,6 @@ module Choice
     puts "What which square would you like to be?"
     responce = gets.chomp.to_i
     responce
-    #put in check for grid
   end
 
   def user_icon(player)
@@ -39,16 +38,18 @@ class Grid
   end
 
 
-  def grid_update (x, y) 
+  def grid_update (square, icon)
+    count = 0
     @@grid.map do |i|
-      if i == x && i.between?(1, 9)
-        @@grid[(i-1)] = y
+      if i == square && i.between?(1, 9)
+        @@grid[(i-1)] = icon
       else
         i
       end
     end
     for i in @@grid
-      if i%3 != 0
+      count += 1
+      if count%3 != 0
         print "[#{i}]"
       else
         puts "[#{i}]"
@@ -81,10 +82,10 @@ three = Game.new("Me", "Him")
 
 three.create
 
-x = three.choice
-y = three.user_icon("Me")
+square_chioce = three.choice
+icon = three.user_icon("Me")
 
-three.grid_update(x, y)
+three.grid_update(square_chioce, icon)
 three.check_win
 
 
